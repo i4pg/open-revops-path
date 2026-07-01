@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Open RevOps Path · Revenue Operations, from zero to practitioner</title>
+  <meta name="description" content="A free, self-paced, project-driven Revenue Operations (RevOps) curriculum — from zero to running the revenue engine of a B2B marketplace, with a two-sided marketplace specialization." />
+  <meta property="og:title" content="The Open RevOps Path" />
+  <meta property="og:description" content="A free OSSU/Odin-style Revenue Operations curriculum: sales/marketing/CS ops, revenue data & metrics, forecasting, systems & automation, with a B2B marketplace specialization." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button id="menuBtn" class="icon-btn" aria-label="Toggle menu">☰</button>
+    <a href="#/" class="brand">
+      <span class="brand-mark">∑</span>
+      <span class="brand-text">The Open RevOps Path</span>
+    </a>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <input id="search" type="search" placeholder="Search modules, topics, resources…" autocomplete="off" />
+    </div>
+    <div id="progressChip" class="progress-chip" title="Your overall progress">0%</div>
+    <button id="langBtn" class="icon-btn lang-btn" aria-label="Toggle language" style="display:none">EN</button>
+    <button id="themeBtn" class="icon-btn" aria-label="Toggle theme">◐</button>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" class="sidebar">
+      <nav id="nav"></nav>
+      <div class="sidebar-foot">
+        <button id="resetProgress" class="link-btn">Reset progress</button>
+      </div>
+    </aside>
+    <div id="scrim" class="scrim"></div>
+    <main id="main" class="main" tabindex="-1"></main>
+  </div>
+
+  <footer id="siteFoot" class="site-foot"></footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
