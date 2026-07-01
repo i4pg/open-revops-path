@@ -10,7 +10,7 @@ In the spirit of [OSSU](https://github.com/ossu/computer-science) and [The Odin 
 
 ## What it is
 
-- **52 modules** across **10 tracks**, ~**600 hours** total.
+- **59 modules** across **11 tracks**, ~**656 hours** total, with **396 verified free resources**.
 - Measurement-first: define the metric (grain, numerator, denominator, edge cases) and its single source of truth **before** you chart it.
 - **Marketplace-native, not generic SaaS.** Sales efficiency is re-derived throughout as *liquidity efficiency* — the least friction and subsidy per unit of GMV — with the marketplace core (active buyer/seller, order cadence, GMV, take-rate, liquidity) governed up front.
 - **MENA/KSA context is first-class:** Vision 2030, 15% VAT, ZATCA e-invoicing, PDPL data protection, SAMA payments, Mada/BNPL, Arabic-first buyers, wholesale net terms, Ramadan seasonality.
@@ -29,8 +29,9 @@ In the spirit of [OSSU](https://github.com/ossu/computer-science) and [The Odin 
 | 7 | Planning, Forecasting, Strategy & Org Design |
 | 8 | Specializations: Marketplace, AI & MENA/KSA GTM |
 | 9 | Capstone & Certification |
+| 10 | Communication, Influence & Leadership *(soft skills — interleave from Day 1)* |
 
-The commercial core (Track 5) carries the flagship **subsidy / pocket-price / margin-leakage waterfall** — the numeric heart of a sales-efficiency mandate — plus credit-risk on net terms and returns/claims ops. Track 8 re-derives the whole engine in two-sided-marketplace terms (liquidity as the master metric, the GMV-to-net-revenue bridge, take-rate P&L, seller payouts & SAMA settlement). Track 9 forces synthesis on the live business in the mandate's own order: **diagnose → build → advise**.
+The commercial core (Track 5) carries the flagship **subsidy / pocket-price / margin-leakage waterfall** — the numeric heart of a sales-efficiency mandate — plus credit-risk on net terms and returns/claims ops. Track 8 re-derives the whole engine in two-sided-marketplace terms (liquidity as the master metric, the GMV-to-net-revenue bridge, take-rate P&L, seller payouts & SAMA settlement). Track 9 forces synthesis on the live business in the mandate's own order: **diagnose → build → advise**. Track 10 (Communication, Influence & Leadership) runs **in parallel from Day 1** — because RevOps is an influence-without-authority role, its projects turn your real analyses into decisions others act on: presenting the subsidy findings to the CFO, getting Sales to adopt a process change, negotiating a deal-desk dispute.
 
 ## How to use it
 
