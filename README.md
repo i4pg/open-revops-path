@@ -33,6 +33,14 @@ In the spirit of [OSSU](https://github.com/ossu/computer-science) and [The Odin 
 
 The commercial core (Track 5) carries the flagship **subsidy / pocket-price / margin-leakage waterfall** — the numeric heart of a sales-efficiency mandate — plus credit-risk on net terms and returns/claims ops. Track 8 re-derives the whole engine in two-sided-marketplace terms (liquidity as the master metric, the GMV-to-net-revenue bridge, take-rate P&L, seller payouts & SAMA settlement). Track 9 forces synthesis on the live business in the mandate's own order: **diagnose → build → advise**. Track 10 (Communication, Influence & Leadership) runs **in parallel from Day 1** — because RevOps is an influence-without-authority role, its projects turn your real analyses into decisions others act on: presenting the subsidy findings to the CFO, getting Sales to adopt a process change, negotiating a deal-desk dispute.
 
+## Companion tools
+
+- **🎯 Mandate Mode** (`#/mandate`) — a 90-day critical path (~12 of the 59 modules) that ships a board-grade sales-efficiency diagnosis, one artifact every 2–3 weeks, instead of waiting to finish all 59.
+- **📖 Glossary & cheat-sheets** (`#/reference`) — 59 RevOps/marketplace terms + 8 cheat-sheets (metric formulas, marketplace/liquidity metrics, the pocket-price waterfall, SQL patterns, forecast-accuracy, exec-communication, negotiation).
+- **⟳ Hybrid soft-skill pairings** — Track 10 (Communication, Influence & Leadership) runs **in parallel from Day 1**, and each skill is cross-linked into the RevOps module where it's practiced (present the 5.3 subsidy findings → 10.2; get Sales to adopt a change → 10.3).
+- **[RevOps Starter Kit](starter/)** — clone-and-fill scaffolding for the flagship deliverables: governed metrics dictionary, subsidy/pocket-price waterfall, credit-risk model, GMV forecast, board-deck outline, decision-memo template, liquidity dashboard spec.
+- **Progress export / import** — your completion tracking survives a cache-clear or device switch (JSON download/upload).
+
 ## How to use it
 
 1. Do tracks in order, and modules within a track in their numbered order — later work assumes the earlier artifacts exist.

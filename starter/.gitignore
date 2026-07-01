@@ -1,0 +1,57 @@
+# ---- Secrets / credentials (PDPL: never commit) ----
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# ---- Real / raw data (keep anonymized samples out of git) ----
+data/raw/
+data/private/
+data/*.csv
+data/*.tsv
+data/*.parquet
+data/*.xlsx
+data/*.xls
+data/*.json
+data/*.db
+data/*.sqlite
+# keep the folder scaffolding + docs
+!data/README.md
+!data/**/.gitkeep
+!data/sample_schema/**
+
+# ---- Model / analysis artifacts ----
+*.pkl
+*.joblib
+*.model
+models/
+artifacts/
+reports/*.html
+reports/*.pdf
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Notebooks scratch ----
+*-scratch.ipynb
+scratch/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

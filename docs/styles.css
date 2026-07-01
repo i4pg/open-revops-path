@@ -255,3 +255,19 @@ table.tbl th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:
   .search-wrap{width:auto;flex:1}
   .progress-chip{display:none}
 }
+
+/* --- companions: pairings, mandate, reference --- */
+.pbadge{display:inline-block;margin-inline-start:6px;font-size:11px;color:var(--green);opacity:.85}
+.callout.pair{border-color:color-mix(in srgb,var(--green) 40%,transparent);background:var(--green-soft)}
+.callout.pair .lab{color:var(--green-2)}
+.chips{line-height:2.1}
+.chips a{display:inline-block;margin:0 4px 4px 0;padding:3px 9px;border:1px solid var(--line);
+  border-radius:999px;font-size:13px;background:var(--card);text-decoration:none}
+.phase{border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:14px 0;background:var(--card)}
+.phase .id{background:var(--green-soft);color:var(--green-2);font-weight:700}
+.cheat{margin:8px 0}
+.cheat .rtitle{font-weight:600;margin-bottom:3px}
+.cheatc{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
+  background:var(--green-soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow-x:auto;margin:0}
+.gterm{padding:7px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.gterm b{color:var(--green-2)}

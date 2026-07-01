@@ -100,6 +100,21 @@
     notFound: { en: "Not found.", ar: "غير موجود." },
     confirmReset: { en: "Clear all your progress?", ar: "مسح كل تقدّمك؟" },
     ofN: { en: "of", ar: "من" },
+    mandate: { en: "Mandate Mode", ar: "وضع المهمة" },
+    reference: { en: "Glossary & cheat-sheets", ar: "المسرد والمراجع" },
+    glossaryH: { en: "Glossary", ar: "المسرد" },
+    cheatsheetsH: { en: "Cheat-sheets", ar: "بطاقات مرجعية" },
+    pairWith: { en: "Soft-skill pairing", ar: "مهارة مقترنة" },
+    parallelBadge: { en: "parallel · start Day 1", ar: "" },
+    criticalPathH: { en: "Critical path", ar: "المسار الحرج" },
+    boardOutputsH: { en: "What the board sees", ar: "" },
+    focusMods: { en: "Modules", ar: "الوحدات" },
+    pairSkills: { en: "Pair", ar: "اقرن" },
+    exportP: { en: "Export", ar: "تصدير" },
+    importP: { en: "Import", ar: "استيراد" },
+    seeAlso: { en: "See also", ar: "انظر أيضًا" },
+    startMandate: { en: "Mandate Mode", ar: "وضع المهمة" },
+    interleaveNote: { en: "Run this in parallel from Day 1 — its projects apply your real RevOps work.", ar: "" },
   };
   function t(k) { var e = UI[k] || {}; return e[LANG] || e.en || k; }
 
@@ -163,11 +178,12 @@
   function buildNav() {
     var h = "";
     h += '<div class="nav-link" data-go="#/"><span class="ic">🏠</span> ' + t("home") + "</div>";
+    if (D.mandate) h += '<div class="nav-link" data-go="#/mandate"><span class="ic">🎯</span> ' + t("mandate") + "</div>";
     h += '<div class="nav-section">' + t("curriculum") + "</div>";
     TRACKS.forEach(function (tr, i) {
       var tid = "t" + i, pct = trackPct(tr), open = openTracks[tid];
       h += '<div class="nav-track ' + (open ? "open" : "") + '" data-track="' + tid + '">';
-      h += '<div class="nav-track-head" data-toggle="' + tid + '">' + esc(trackName(tr)) + '<span class="chev">▸</span></div>';
+      h += '<div class="nav-track-head" data-toggle="' + tid + '">' + esc(trackName(tr)) + (tr.parallel ? ' <span class="pbadge" title="' + t("parallelBadge") + '">⟳</span>' : '') + '<span class="chev">▸</span></div>';
       h += '<div class="nav-track-bar"><i style="width:' + pct + '%"></i></div><div class="nav-modules">';
       (tr.modules || []).forEach(function (m) { h += navMod(m); });
       h += "</div></div>";
@@ -184,6 +200,7 @@
     }
     h += '<div class="nav-section">' + t("more") + "</div>";
     if (D.landscape) h += '<div class="nav-link" data-go="#/arabic"><span class="ic">📺</span> ' + t("arabicRes") + "</div>";
+    if ((D.glossary && D.glossary.length) || (D.cheatsheets && D.cheatsheets.length)) h += '<div class="nav-link" data-go="#/reference"><span class="ic">📖</span> ' + t("reference") + "</div>";
     h += '<div class="nav-link" data-go="#/projects"><span class="ic">🛠️</span> ' + t("projects") + "</div>";
     h += '<div class="nav-link" data-go="#/certs"><span class="ic">🎓</span> ' + t("certifications") + "</div>";
     h += '<div class="nav-link" data-go="#/tooling"><span class="ic">🧰</span> ' + t("tooling") + "</div>";
@@ -246,6 +263,7 @@
     if (mWhy(m)) h += '<div class="callout why"><span class="lab">' + t("why") + "</span>" + esc(mWhy(m)) + "</div>";
     var outs = mOut(m);
     if (outs.length) { h += "<h2>" + t("byEnd") + "</h2><ul class=\"clean\">"; outs.forEach(function (o) { h += "<li>" + esc(o) + "</li>"; }); h += "</ul>"; }
+    if (m.pair && m.pair.length) { h += '<div class="callout pair"><span class="lab">⟳ ' + t("pairWith") + "</span>" + m.pair.map(function (p) { return modLink(p.id) + (p.why ? " — " + esc(p.why) : ""); }).join("<br>") + "</div>"; }
     if (rtl() && m.arabicCoverageNote) h += '<div class="section-note"><b>' + t("arCoverage") + ":</b> " + esc(m.arabicCoverageNote) + "</div>";
     var pr = primaryRes(m);
     if (pr.length) { h += "<h2>" + t("resources") + "</h2>"; pr.slice().sort(function (a, b) { return roleRank(a.role) - roleRank(b.role); }).forEach(function (r) { h += resourceHTML(r); }); }
@@ -294,6 +312,7 @@
     var first = flatGlobal[0];
     h += '<div class="btn-row">';
     if (first) h += '<a class="btn" href="#/module/' + encodeURIComponent(first.id) + '">' + t("startAt") + " " + bdi(first.id) + " " + (rtl() ? "←" : "→") + "</a>";
+    if (D.mandate) h += '<a class="btn ghost" href="#/mandate">🎯 ' + t("startMandate") + "</a>";
     if (SAUDI) h += '<a class="btn ghost" href="#/saudi">🇸🇦 ' + t("saudiTrack") + "</a>";
     h += "</div></div>";
     h += "<h2>" + t("thePath") + "</h2><div class=\"grid\">";
@@ -426,6 +445,50 @@
     set(h);
   }
 
+  function renderMandate() {
+    var M = D.mandate; if (!M) { set('<div class="empty">' + t("empty") + "</div>"); return; }
+    var h = '<div class="crumb"><a href="#/">' + t("home") + "</a> › " + t("mandate") + "</div>";
+    h += '<div class="ksa"><h1>🎯 ' + esc(M.title || t("mandate")) + "</h1>";
+    if (M.intro) h += '<div class="tagline">' + esc(M.intro) + "</div>";
+    h += "</div>";
+    var pr = M.principles || [];
+    if (pr.length) { h += '<div class="section-note"><b>' + t("principles") + ':</b><ul class="clean">'; pr.forEach(function (p) { h += "<li>" + esc(p) + "</li>"; }); h += "</ul></div>"; }
+    if (M.criticalPath && M.criticalPath.length) { h += "<h2>" + t("criticalPathH") + '</h2><p class="chips">' + M.criticalPath.map(modLink).join(" ") + "</p>"; }
+    (M.phases || []).forEach(function (ph, i) {
+      h += '<div class="phase"><div class="mod-head"><span class="id">' + esc(ph.timeframe || ("#" + (i + 1))) + '</span><h2 style="flex:1;min-width:200px">' + esc(ph.name) + "</h2></div>";
+      if (ph.goal) h += '<p class="lede">' + esc(ph.goal) + "</p>";
+      if (ph.modules && ph.modules.length) h += '<p class="muted"><b>' + t("focusMods") + ":</b> " + ph.modules.map(modLink).join(" · ") + "</p>";
+      if (ph.softSkills && ph.softSkills.length) h += '<p class="muted"><b>⟳ ' + t("pairSkills") + ":</b> " + ph.softSkills.map(modLink).join(" · ") + "</p>";
+      if (ph.deliverable) h += '<div class="callout gold"><span class="lab">' + t("deliverable") + "</span>" + esc(ph.deliverable) + "</div>";
+      h += "</div>";
+    });
+    if (M.boardOutputs && M.boardOutputs.length) { h += "<h2>" + t("boardOutputsH") + '</h2><ul class="clean">'; M.boardOutputs.forEach(function (b) { h += "<li>" + esc(b) + "</li>"; }); h += "</ul>"; }
+    set(h);
+  }
+
+  function renderReference() {
+    var gl = D.glossary || [], cs = D.cheatsheets || [];
+    var h = '<div class="crumb"><a href="#/">' + t("home") + "</a> › " + t("reference") + "</div><h1>" + t("reference") + "</h1>";
+    if (cs.length) {
+      h += "<h2>" + t("cheatsheetsH") + "</h2>";
+      cs.forEach(function (s) {
+        h += '<details class="flags" open><summary>' + esc(s.title) + (s.category ? " · " + esc(s.category) : "") + "</summary>";
+        (s.entries || []).forEach(function (e) { h += '<div class="cheat"><div class="rtitle">' + esc(e.name) + '</div><pre class="cheatc">' + esc(e.content) + "</pre></div>"; });
+        h += "</details>";
+      });
+    }
+    if (gl.length) {
+      h += "<h2>" + t("glossaryH") + ' <span class="muted">(' + bdi(gl.length) + ")</span></h2>";
+      var cats = {}, order = [];
+      gl.forEach(function (g) { var c = g.category || "—"; if (!cats[c]) { cats[c] = []; order.push(c); } cats[c].push(g); });
+      order.forEach(function (c) {
+        h += "<h3>" + esc(c) + "</h3>";
+        cats[c].forEach(function (g) { h += '<div class="gterm"><b>' + esc(g.term) + "</b> — " + esc(g.definition) + (g.seeAlso && g.seeAlso.length ? ' <span class="muted">(' + t("seeAlso") + ": " + esc(g.seeAlso.join(", ")) + ")</span>" : "") + "</div>"; });
+      });
+    }
+    set(h);
+  }
+
   /* ---------- search ---------- */
   var searchEl = document.getElementById("search");
   var searchActive = false;
@@ -456,6 +519,8 @@
     if (route === "module") return renderModule(decodeURIComponent(parts.slice(1).join("/")));
     if (route === "track") return renderTrack(decodeURIComponent(parts.slice(1).join("/")));
     if (route === "saudi") return renderSaudi();
+    if (route === "mandate") return renderMandate();
+    if (route === "reference") return renderReference();
     if (route === "arabic") return renderArabic();
     if (route === "projects") return renderProjects();
     if (route === "certs") return renderCerts();
@@ -488,6 +553,24 @@
   document.getElementById("menuBtn").addEventListener("click", function () { sidebar.classList.toggle("open"); scrim.classList.toggle("show"); });
   scrim.addEventListener("click", closeSidebar);
   document.getElementById("resetProgress").addEventListener("click", function () { if (confirm(t("confirmReset"))) { done = new Set(); saveP(done); refreshUI(); router(); } });
+  document.getElementById("exportProgress").addEventListener("click", function () {
+    var payload = JSON.stringify({ v: 1, app: "open-revops-path", done: Array.from(done) }, null, 2);
+    var blob = new Blob([payload], { type: "application/json" });
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "revops-progress.json";
+    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  });
+  var impFile = document.getElementById("importFile");
+  document.getElementById("importProgress").addEventListener("click", function () { impFile.click(); });
+  impFile.addEventListener("change", function () {
+    var f = impFile.files && impFile.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      try { var o = JSON.parse(rd.result); var arr = (o && o.done) || (Array.isArray(o) ? o : []); arr.forEach(function (id) { done.add(id); }); saveP(done); refreshUI(); router(); }
+      catch (e) { alert("Could not read that progress file."); }
+      impFile.value = "";
+    };
+    rd.readAsText(f);
+  });
 
   /* ---------- boot ---------- */
   (function preopen() {

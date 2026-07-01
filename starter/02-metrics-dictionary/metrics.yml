@@ -1,0 +1,97 @@
+# Metrics Dictionary — governed semantic layer (module 1.5)
+#
+# Single source of truth for every metric that appears in SQL, Python, memos,
+# and the board deck. If a number isn't defined here, it doesn't ship.
+#
+# Rules of the road:
+#   - One metric = one definition. No "GMV" meaning three things in three decks.
+#   - Every metric names ONE source_of_record and ONE owner.
+#   - reconciliation says how you PROVE the number ties out across systems.
+#   - Changes are versioned and reviewed (docs-as-code). Bump `version`.
+
+version: 1
+dictionary_owner: revops
+review_cadence: monthly
+systems:
+  smartsuite: CRM/OMS/TMS (accounts, orders, fulfillment)
+  salla: storefront / buyer activity
+  netsuite: finance ERP + WMS (billing, AR, inventory, cost)
+
+# --- Reusable field/segment definitions (avoid re-defining per metric) ---
+dimensions:
+  buyer_id:      { type: hashed_id, pii: true, note: "retailer account, anonymize before commit" }
+  seller_id:     { type: hashed_id, pii: true, note: "brand/distributor" }
+  order_date:    { type: date, note: "booking date, KSA timezone Asia/Riyadh" }
+  category:      { type: string }
+  region:        { type: string, note: "KSA region / GCC country" }
+
+metrics:
+
+  - id: gmv
+    label: Gross Merchandise Value
+    status: governed            # governed | draft | deprecated
+    definition: >
+      Total buyer-facing value of goods transacted through the marketplace in a
+      period, BEFORE take-rate, subsidies, taxes, shipping, returns, and
+      cancellations are considered. It is a volume metric, not revenue.
+    grain: order_line           # lowest grain the metric is computed at
+    unit: SAR
+    numerator: SUM(order_line.qty * order_line.unit_price_sar)
+    denominator: null           # GMV is a sum, not a ratio
+    includes:
+      - confirmed / booked orders
+    excludes:
+      - cancelled orders (before fulfillment)
+      - VAT / ZATCA tax component
+      - shipping fees charged to buyer
+      - test / internal accounts (flag = true)
+    owner: revops
+    source_of_record: smartsuite.oms_order_lines   # OMS is booking truth
+    upstream_systems: [salla, netsuite]
+    reconciliation: >
+      Monthly GMV from OMS (SmartSuite) must tie to NetSuite billed revenue +
+      open orders within +/- 1.0%. Investigate any line where OMS shows booked
+      but NetSuite shows no invoice/credit after N days. Document the delta
+      bridge (cancellations, returns, timing).
+    segments: [category, region, seller_id, buyer_id]
+    gotchas:
+      - Do NOT net returns here; that is `net_gmv`. Keep gross clean.
+      - 30-line SO chunking in OMS: re-consolidate before summing or you
+        double-count split lines. Join on the original SO id.
+      - Currency: assume SAR; convert GCC orders at booking-date FX.
+
+  - id: active_buyer
+    label: Active Buyer (rolling)
+    status: governed
+    definition: >
+      A distinct buyer (retailer) account that placed at least one qualifying
+      order within the trailing activity window. "Active" is the liquidity
+      heartbeat of the demand side.
+    grain: buyer_id
+    unit: count (distinct buyers)
+    window: trailing_90_days     # TODO confirm window with CFO; keep consistent
+    numerator: COUNT(DISTINCT buyer_id WHERE has_qualifying_order_in_window)
+    denominator: null
+    qualifying_order:
+      - status in (confirmed, fulfilled)   # a placed order, not an abandoned cart
+      - excludes test/internal accounts
+      - excludes fully-cancelled orders
+    owner: revops
+    source_of_record: smartsuite.oms_order_lines
+    upstream_systems: [salla]
+    reconciliation: >
+      Distinct active buyers from OMS must reconcile to Salla ordering-customers
+      report for the same window within +/- 2%. Larger gaps usually mean an
+      integration drop (Salla order not synced to OMS) — check Make/n8n logs.
+    segments: [region, category_first_order, cohort_month]
+    gotchas:
+      - Choose ONE window (7/30/90d) and use it everywhere. Mixing windows is
+        the #1 way active-buyer counts disagree across decks.
+      - De-dupe merged accounts (same retailer, two SmartSuite records).
+      - "Active" != "activated": activation is the FIRST-ever order; active is
+        recency. Don't conflate (see funnel_conversion.sql).
+
+# --- TODO: add the rest as you need them, same shape ---
+#   net_gmv, take_rate_gross, take_rate_net, subsidy_per_gmv, pocket_margin,
+#   nrr, grr, activation_rate, reorder_rate, fill_rate, otif, dso, default_rate
+# Copy the block above; never invent a definition inline in a query.
