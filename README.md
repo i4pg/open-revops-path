@@ -38,7 +38,7 @@ The commercial core (Track 5) carries the flagship **subsidy / pocket-price / ma
 - **🎯 Mandate Mode** (`#/mandate`) — a 90-day critical path (~12 of the 59 modules) that ships a board-grade sales-efficiency diagnosis, one artifact every 2–3 weeks, instead of waiting to finish all 59.
 - **📖 Glossary & cheat-sheets** (`#/reference`) — 59 RevOps/marketplace terms + 8 cheat-sheets (metric formulas, marketplace/liquidity metrics, the pocket-price waterfall, SQL patterns, forecast-accuracy, exec-communication, negotiation).
 - **⟳ Hybrid soft-skill pairings** — Track 10 (Communication, Influence & Leadership) runs **in parallel from Day 1**, and each skill is cross-linked into the RevOps module where it's practiced (present the 5.3 subsidy findings → 10.2; get Sales to adopt a change → 10.3).
-- **[RevOps Starter Kit](starter/)** — clone-and-fill scaffolding for the flagship deliverables: governed metrics dictionary, subsidy/pocket-price waterfall, credit-risk model, GMV forecast, board-deck outline, decision-memo template, liquidity dashboard spec.
+- **[RevOps Starter Kit](https://github.com/i4pg/open-revops-starter)** — a **template repo** (click *“Use this template”*) with clone-and-fill scaffolding for the flagship deliverables: governed metrics dictionary, subsidy/pocket-price waterfall, credit-risk model, GMV forecast, board-deck outline, decision-memo template, liquidity dashboard spec.
 - **Progress export / import** — your completion tracking survives a cache-clear or device switch (JSON download/upload).
 
 ## How to use it
